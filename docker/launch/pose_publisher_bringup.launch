@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- node pose_publisher arguments -->
+	<arg name="id_robot" value="$(optenv ROBOT_ID robot)"/>
+	<arg name="pose_frequency" default="$(optenv POSE_PUBLISHER_FREQUENCY 10)"/>
+	<arg name="base_frame_suffix" default="$(optenv POSE_PUBLISHER_BASE_FRAME_SUFFIX base_footprint)"/>
+	<arg name="topic_republish" default="$(optenv POSE_PUBLISHER_TOPIC_REPUB pose)"/>
+	<arg name="map_frame" default="$(optenv MAP_FRAME robot_map)" />
+
+	<!-- BEGIN ROBOT-->
+	<group ns="$(arg id_robot)">
+
+		<!-- pose publisher -->
+		<include file="$(find pose_publisher)/launch/pose_publisher_launch.launch">
+			<arg name="id_robot" default="$(arg id_robot)"/>
+			<arg name="topic_republish" default="$(arg topic_republish)"/>
+			<arg name="frequency" default="$(arg pose_frequency)"/>
+			<arg name="map_frame" default="$(arg map_frame)"/>
+			<arg name="base_frame_suffix" default="$(arg base_frame_suffix)"/>
+		</include>
+	</group>
+
+</launch>

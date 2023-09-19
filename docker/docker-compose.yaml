@@ -1,0 +1,13 @@
+---
+name: pose-publisher
+services:
+  core:
+    image: pose-publisher:noetic-devel
+    environment:
+      #  GEN_COMMAND: sleep infinity
+      #  STARTUP_TYPE: generic
+      ROBOT_ID: "robot"
+      POSE_PUBLISHER_FREQUENCY: "10"
+      POSE_PUBLISHER_BASE_FRAME_SUFFIX: "base_footprint"
+      POSE_PUBLISHER_TOPIC_REPUB: "pose"
+      MAP_FRAME: "robot_map"

@@ -1,0 +1,30 @@
+---
+name: Docker image push to registry
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+  workflow_dispatch:
+
+jobs:
+  docker-build:
+    name: Build and upload image
+    runs-on: internal-robotnik
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to Robotnik Registry
+        uses: docker/login-action@v2
+        with:
+          registry: registry.robotnik.ws
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build image and push
+        env:
+          REGISTRY_BASE: ${{ vars.REGISTRY_BASE }}
+          IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+        run: >
+          cd docker
+          &&
+          docker compose -f ci.yaml build --push
