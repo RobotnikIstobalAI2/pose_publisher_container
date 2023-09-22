@@ -2,7 +2,7 @@
 name: open-rmf
 services:
   core:
-    image: ${REGISTRY_BASE}/library/${IMAGE_NAME}:humble-${GITHUB_REF_NAME}
+    image: ${REGISTRY_BASE}/library/${IMAGE_NAME}:noetic-${GITHUB_REF_NAME}
     build:
       context: ..
       dockerfile: docker/Dockerfile
