@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2-rc01] - 2023-09-25
+
+### Fixed
+- Fixed demo compose
+
+### Changed
+- updated to package version `0.1.2-rc01`
+
+### Removed
+- Remove bringup launch file (now included on the base package)
+
+
 ## [0.1.1-rc01] - 2023-09-22
 
 ### Added

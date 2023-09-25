@@ -2,7 +2,7 @@
 name: pose-publisher
 services:
   core:
-    image: pose-publisher:noetic-0.1.1-rc01
+    image: pose-publisher:noetic-0.1.2-rc01
     environment:
       #  GEN_COMMAND: sleep infinity
       #  STARTUP_TYPE: generic
