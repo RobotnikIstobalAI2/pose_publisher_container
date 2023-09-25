@@ -4,7 +4,7 @@ networks:
     name: host
     external: true
 services:
-  mqtt:
+  pose:
     image: ${IMAGE}
     deploy:
       replicas: 1
@@ -30,5 +30,5 @@ services:
       POSE_PUBLISHER_TOPIC_REPUB: ${POSE_PUBLISHER_TOPIC_REPUB}
       MAP_FRAME: ${MAP_FRAME}
       CHECK_NODES: "true"
-      NODES_TO_CHECK: "/tf"
+      NODES_TO_CHECK: "/rosout"
       HEALTHCHECK_NODES: "/${ROBOT_ID}/${NODE_NAME}"
