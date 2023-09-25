@@ -55,8 +55,8 @@ target=/tmp/common.repo.yml,ro \
         --input /tmp/common.repo.yml  \
         --shallow
 
-COPY docker/launch/pose_publisher_bringup.launch \
-  src/pose_publisher/launch
+# COPY docker/launch/pose_publisher_bringup.launch \
+#   src/pose_publisher/launch
 
 RUN  sed -i 's#DIRECTORY launch/#DIRECTORY launch#' src/pose_publisher/CMakeLists.txt
 
