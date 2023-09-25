@@ -108,9 +108,11 @@ ENV ROS_BU_LAUNCH "pose_publisher_bringup.launch"
 ENV CHECK_NODES "false"
 #### space separted node list with full namespace
 ENV NODES_TO_CHECK "/rosout"
-ENV HEALTHCHECK_NODES "/${ROBOT_ID}/pose_publisher"
 
 ENV ROBOT_ID "robot"
+ENV NODE_NAME "pose_publisher"
+ENV HEALTHCHECK_NODES "/${ROBOT_ID}/pose_publisher"
+
 ENV POSE_PUBLISHER_FREQUENCY "10"
 ENV POSE_PUBLISHER_BASE_FRAME_SUFFIX "base_footprint"
 ENV POSE_PUBLISHER_TOPIC_REPUB "pose"
