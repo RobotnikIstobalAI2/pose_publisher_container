@@ -1,7 +1,7 @@
 ---
 name: Container image creation
 # author: "Guillem Gari <ggari@robotnik.es>"
-description: "Creates container image and push it to the registry"
+# description: "Creates container image and push it to the registry"
 
 on:
   push:
