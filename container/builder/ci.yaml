@@ -1,7 +1,7 @@
 ---
 name: ${IMAGE_NAME}
 services:
-  core:
+  container:
     image: ${REGISTRY_BASE}/${REGISTRY_PROJECT}/${IMAGE_NAME}:noetic-${GITHUB_REF_NAME}
     build:
       context: .
