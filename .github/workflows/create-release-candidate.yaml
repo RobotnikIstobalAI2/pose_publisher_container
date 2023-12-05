@@ -8,9 +8,13 @@ on:
 jobs:
   build:
     name: Create Release
-    runs-on: internal-robotnik
+    runs-on:
+      - self-hosted
+      - internal-robotnik
+      - linux
+      - kubernetes
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: CSchoel/release-notes-from-changelog@v1.3.0
       - name: Create Release using GitHub CLI
         env:

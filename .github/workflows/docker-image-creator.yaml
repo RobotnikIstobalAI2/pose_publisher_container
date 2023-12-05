@@ -11,9 +11,13 @@ on:
 jobs:
   docker-build:
     name: Build and upload image
-    runs-on: internal-robotnik
+    runs-on:
+      - self-hosted
+      - internal-robotnik
+      - linux
+      - kubernetes
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Login to Robotnik Registry
         uses: docker/login-action@v2
         with:
@@ -24,7 +28,6 @@ jobs:
         env:
           REGISTRY_BASE: ${{ vars.REGISTRY_BASE }}
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-        run: >
-          cd docker
-          &&
+        run: |
+          cd container/builder
           docker compose -f ci.yaml build --push
