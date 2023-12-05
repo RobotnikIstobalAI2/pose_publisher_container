@@ -9,11 +9,10 @@ You can configure it throught the docker-compose file
 
 ```yaml
 ---
----
 name: pose-publisher
 services:
   core:
-    image: pose-publisher:noetic-0.1.3-rc01
+    image: pose-publisher:noetic-0.1.3
     environment:
       ROBOT_ID: "robot"
       POSE_PUBLISHER_FREQUENCY: "10"
@@ -26,7 +25,7 @@ services:
 ```bash
 git clone git@github.com:RobotnikIstobalAI2/pose_publisher_container.git
 cd pose_publisher_container
-git checkout noetic-devel
+git checkout noetic
 cd container/builder
 docker compose build
 cd ..

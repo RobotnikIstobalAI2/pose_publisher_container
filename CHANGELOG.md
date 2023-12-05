@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.3-rc01] - 2023-12-05
+## [0.1.3] - 2023-12-05
 
 ### Added
 - Added `README.md`
