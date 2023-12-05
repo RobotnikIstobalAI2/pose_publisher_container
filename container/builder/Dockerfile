@@ -32,6 +32,7 @@
 ARG base_image="robotnik/ros"
 ARG ros_distro="noetic"
 ARG image_base_version="use-args"
+ARG version="use-args"
 
 FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
@@ -61,8 +62,8 @@ FROM  ${base_image}:${ros_distro}-base-${image_base_version} as base
 
 LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.title="pose-publisher" \
-      org.opencontainers.image.version="0.1.3-rc01" \
-      org.opencontainers.image.description="Open-RMF Core bringup" \
+      org.opencontainers.image.version="${version}" \
+      org.opencontainers.image.description="Pose Publisher" \
       org.opencontainers.image.source="https://github.com/RobotnikIstobalAI2/pose_publisher_container" \
       org.opencontainers.image.vendor="Robotnik Automation S.L." \
       org.opencontainers.image.licenses="BSD-3-Clause" \
