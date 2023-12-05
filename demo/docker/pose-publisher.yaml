@@ -1,0 +1,34 @@
+---
+networks:
+  host:
+    name: host
+    external: true
+services:
+  pose:
+    image: ${IMAGE}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+      #start_interval: 10s
+    networks:
+      - host
+    environment:
+      ROS_MASTER_URI: "http://localhost:11311"
+      ROBOT_ID: ${ROBOT_ID}
+      NODE_NAME: ${NODE_NAME}
+      POSE_PUBLISHER_FREQUENCY: ${POSE_PUBLISHER_FREQUENCY}
+      POSE_PUBLISHER_BASE_FRAME_SUFFIX: ${POSE_PUBLISHER_BASE_FRAME_SUFFIX}
+      POSE_PUBLISHER_TOPIC_REPUB: ${POSE_PUBLISHER_TOPIC_REPUB}
+      MAP_FRAME: ${MAP_FRAME}
+      CHECK_NODES: "true"
+      NODES_TO_CHECK: "/rosout"
+      HEALTHCHECK_NODES: "/${ROBOT_ID}/${NODE_NAME}"

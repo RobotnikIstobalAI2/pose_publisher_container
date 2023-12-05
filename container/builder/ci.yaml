@@ -1,0 +1,17 @@
+---
+name: ${IMAGE_NAME}
+services:
+  container:
+    image: ${REGISTRY_BASE}/${REGISTRY_PROJECT}/${IMAGE_NAME}:noetic-${GITHUB_REF_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+      pull: true
+      no_cache: true
+      args:
+        # Base image to contruct current image
+        image_base_version: a07f857-20231115
+        ros_distro: noetic
+        base_image: ${REGISTRY_BASE}/${REGISTRY_PROJECT}/ros
+        version: ${GITHUB_REF_NAME}

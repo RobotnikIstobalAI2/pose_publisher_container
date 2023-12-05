@@ -31,13 +31,14 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ARG base_image="robotnik/ros"
 ARG ros_distro="noetic"
-ARG image_version="use-args"
+ARG image_base_version="use-args"
+ARG version="use-args"
 
-FROM ${base_image}:${ros_distro}-builder-$image_version as builder
+FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
 USER root
 
-RUN --mount=type=bind,source=./docker/requirements/builder.txt,target=/tmp/requirements.txt true \
+RUN --mount=type=bind,source=./requirements/builder.txt,target=/tmp/requirements.txt true \
   && apt-get update \
   && apt-get install -q -y \
   --no-install-recommends \
@@ -49,32 +50,27 @@ RUN --mount=type=bind,source=./docker/requirements/builder.txt,target=/tmp/requi
 USER $USER_NAME
 
 RUN --mount=type=bind,\
-source=./docker/repos/common.repo.yml,\
+source=./repos/common.repo.yml,\
 target=/tmp/common.repo.yml,ro \
      vcs import \
         --input /tmp/common.repo.yml  \
         --shallow
 
-COPY docker/launch/pose_publisher_bringup.launch \
-  src/pose_publisher/launch
-
-RUN  sed -i 's#DIRECTORY launch/#DIRECTORY launch#' src/pose_publisher/CMakeLists.txt
-
 RUN generate_debs.sh
 
-FROM  ${base_image}:${ros_distro}-base-$image_version as base
+FROM  ${base_image}:${ros_distro}-base-${image_base_version} as base
 
 LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.title="pose-publisher" \
-      org.opencontainers.image.version="devel" \
-      org.opencontainers.image.description="Open-RMF Core bringup" \
+      org.opencontainers.image.version="${version}" \
+      org.opencontainers.image.description="Pose Publisher" \
       org.opencontainers.image.source="https://github.com/RobotnikIstobalAI2/pose_publisher_container" \
       org.opencontainers.image.vendor="Robotnik Automation S.L." \
       org.opencontainers.image.licenses="BSD-3-Clause" \
       org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
 USER root
 
-RUN --mount=type=bind,source=./docker/requirements/pose-publisher.txt,target=/tmp/requirements.txt true \
+RUN --mount=type=bind,source=./requirements/pose-publisher.txt,target=/tmp/requirements.txt true \
   && apt-get update \
   && apt-get install -q -y \
   --no-install-recommends \
@@ -108,9 +104,11 @@ ENV ROS_BU_LAUNCH "pose_publisher_bringup.launch"
 ENV CHECK_NODES "false"
 #### space separted node list with full namespace
 ENV NODES_TO_CHECK "/rosout"
-ENV HEALTHCHECK_NODES "/${ROBOT_ID}/pose_publisher"
 
 ENV ROBOT_ID "robot"
+ENV NODE_NAME "pose_publisher"
+ENV HEALTHCHECK_NODES "/${ROBOT_ID}/pose_publisher"
+
 ENV POSE_PUBLISHER_FREQUENCY "10"
 ENV POSE_PUBLISHER_BASE_FRAME_SUFFIX "base_footprint"
 ENV POSE_PUBLISHER_TOPIC_REPUB "pose"
