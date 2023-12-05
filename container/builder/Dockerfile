@@ -37,7 +37,7 @@ FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
 USER root
 
-RUN --mount=type=bind,source=./docker/requirements/builder.txt,target=/tmp/requirements.txt true \
+RUN --mount=type=bind,source=./requirements/builder.txt,target=/tmp/requirements.txt true \
   && apt-get update \
   && apt-get install -q -y \
   --no-install-recommends \
@@ -49,7 +49,7 @@ RUN --mount=type=bind,source=./docker/requirements/builder.txt,target=/tmp/requi
 USER $USER_NAME
 
 RUN --mount=type=bind,\
-source=./docker/repos/common.repo.yml,\
+source=./repos/common.repo.yml,\
 target=/tmp/common.repo.yml,ro \
      vcs import \
         --input /tmp/common.repo.yml  \
@@ -69,7 +69,7 @@ LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
 USER root
 
-RUN --mount=type=bind,source=./docker/requirements/pose-publisher.txt,target=/tmp/requirements.txt true \
+RUN --mount=type=bind,source=./requirements/pose-publisher.txt,target=/tmp/requirements.txt true \
   && apt-get update \
   && apt-get install -q -y \
   --no-install-recommends \

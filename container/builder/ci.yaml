@@ -4,8 +4,8 @@ services:
   core:
     image: ${REGISTRY_BASE}/library/${IMAGE_NAME}:noetic-${GITHUB_REF_NAME}
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: .
+      dockerfile: Dockerfile
       args:
         # Base image to contruct current image
         image_base_version: a07f857-20231115
