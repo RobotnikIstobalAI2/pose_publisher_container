@@ -30,7 +30,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ARG base_image="robotnik/ros"
-ARG ros_distro="melodic"
+ARG ros_distro="noetic"
 ARG image_base_version="use-args"
 
 FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
