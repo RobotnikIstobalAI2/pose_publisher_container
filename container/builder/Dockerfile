@@ -30,10 +30,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ARG base_image="robotnik/ros"
-ARG ros_distro="noetic"
-ARG image_version="use-args"
+ARG ros_distro="melodic"
+ARG image_base_version="use-args"
 
-FROM ${base_image}:${ros_distro}-builder-$image_version as builder
+FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
 USER root
 
@@ -62,11 +62,11 @@ RUN  sed -i 's#DIRECTORY launch/#DIRECTORY launch#' src/pose_publisher/CMakeList
 
 RUN generate_debs.sh
 
-FROM  ${base_image}:${ros_distro}-base-$image_version as base
+FROM  ${base_image}:${ros_distro}-base-${image_base_version} as base
 
 LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.title="pose-publisher" \
-      org.opencontainers.image.version="0.1.2-rc01" \
+      org.opencontainers.image.version="0.1.3-rc01" \
       org.opencontainers.image.description="Open-RMF Core bringup" \
       org.opencontainers.image.source="https://github.com/RobotnikIstobalAI2/pose_publisher_container" \
       org.opencontainers.image.vendor="Robotnik Automation S.L." \

@@ -2,10 +2,11 @@
 name: pose-publisher
 services:
   core:
-    image: pose-publisher:noetic-0.1.2-rc01
+    image: pose-publisher:noetic-0.1.3-rc01
     build:
       context: ..
       dockerfile: docker/Dockerfile
       args:
         # Base image to contruct current image
-        image_version: 0.2.1
+        image_base_version: a07f857-20231115
+        ros_distro: noetic
