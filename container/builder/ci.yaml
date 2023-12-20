@@ -11,7 +11,7 @@ services:
       no_cache: true
       args:
         # Base image to contruct current image
-        image_base_version: a07f857-20231115
+        image_base_version: 0.5.0
         ros_distro: noetic
         base_image: ${REGISTRY_BASE}/${REGISTRY_PROJECT}/ros
         version: ${GITHUB_REF_NAME}

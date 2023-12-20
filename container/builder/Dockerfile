@@ -38,9 +38,12 @@ FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
 USER root
 
-RUN --mount=type=bind,source=./requirements/builder.txt,target=/tmp/requirements.txt true \
+RUN \
+--mount=type=bind,\
+source=./requirements/builder.txt,\
+target=/tmp/requirements.txt true \
   && apt-get update \
-  && apt-get install -q -y \
+  && apt-fast install -q -y \
   --no-install-recommends \
     $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
   && apt-get clean -q -y \
@@ -70,9 +73,12 @@ LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
 USER root
 
-RUN --mount=type=bind,source=./requirements/pose-publisher.txt,target=/tmp/requirements.txt true \
+RUN \
+--mount=type=bind,\
+source=./requirements/pose-publisher.txt,\
+target=/tmp/requirements.txt true \
   && apt-get update \
-  && apt-get install -q -y \
+  && apt-fast install -q -y \
   --no-install-recommends \
     $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
   && apt-get clean -q -y \
@@ -80,9 +86,12 @@ RUN --mount=type=bind,source=./requirements/pose-publisher.txt,target=/tmp/requi
   && rm -rf /var/lib/apt/lists/*
 
 USER root
-RUN --mount=type=bind,from=builder,source=${USER_WORKSPACE}/debs,target=/tmp/debs \
+RUN \
+--mount=type=bind,\
+from=builder,\
+source=${USER_WORKSPACE}/debs,target=/tmp/debs \
     apt update && \
-    apt-get install -y --no-install-recommends \
+    apt-fast install -y --no-install-recommends \
         /tmp/debs/*.deb \
     && rm -rf /var/lib/apt/lists/*
 

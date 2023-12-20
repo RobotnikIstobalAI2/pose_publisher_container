@@ -1,6 +1,13 @@
 # Changelog
 
-## [0.1.3-rc01] - 2023-12-05
+## Unreleased
+
+### Changed
+- Changed to robotnik public `robotnik/ros:noetic-gui-0.5.0` ros images as docker image base.
+- Changed to robotnik public `robotnik/ros:noetic-builder-0.5.0` ros images as package builder intermediate image.
+- Use of `apt-fast` for parallel downloading for apt
+
+## [0.1.3] - 2023-12-05
 
 ### Added
 - Added `README.md`

@@ -8,6 +8,6 @@ services:
       dockerfile: Dockerfile
       args:
         # Base image to contruct current image
-        image_base_version: a07f857-20231115
+        image_base_version: 0.5.0
         ros_distro: noetic
         version: devel
