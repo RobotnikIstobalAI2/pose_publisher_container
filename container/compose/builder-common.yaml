@@ -1,0 +1,18 @@
+---
+name: ${IMAGE_NAME}
+services:
+  container:
+    image: >-
+      ${REGISTRY_BASE}${REGISTRY_PROJECT}/${IMAGE_NAME}:${DOCKER_ROS_DISTRO}-${VERSION}
+    build:
+      pull: true
+      no_cache: true
+      context: .
+      dockerfile: Dockerfile
+      args:
+        base_image: ${REGISTRY_BASE}robotnik/ros
+        image_base_version: ${IMAGE_BASE_VERSION}
+        ros_distro: ${DOCKER_ROS_DISTRO}
+        version: ${VERSION}
+        builder_type: ${BUILDER_TYPE}
+        ros_mirror: ${ROS_MIRROR}

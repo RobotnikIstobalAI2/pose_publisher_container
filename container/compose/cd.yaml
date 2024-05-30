@@ -1,0 +1,11 @@
+---
+services:
+  container:
+    image: >-
+      ${REGISTRY_BASE}/${REGISTRY_PROJECT}/${IMAGE_NAME}:pose-publisher-${DOCKER_ROS_DISTRO}-${VERSION}
+    build:
+      network: host
+      args:
+        base_image: ${REGISTRY_BASE}/robotnik/ros
+    networks:
+      default: null
