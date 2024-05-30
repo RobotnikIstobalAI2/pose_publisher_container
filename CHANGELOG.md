@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Added `environment` folder, with the environment variables.
+
+### Changed
+- Modified in `repos/common.repo.yml` the branch of the repository `pose_publisher` from `ros1` `0.1.3` to `ros2` `0.1.4-rc01`.
+- Modified `requirements` with the ros2 dependencies.
+- New docker compose structure with, include, override and merge features (consult docker compose documention for futher information).
+    - Compose files with content are located in `container/compose`, environment variables for the docker compose splitted and assigned to included.
+    - Use yaml of anchors and links to avoid redefinition in the same file.
+    - Refactor from `docker-compose.yaml` to `compose.yaml` to future compatibility with podman.
+
+### Fixed
+- Refactor from ci.yaml (continuous integration) to cd.yaml (continuous delivery)
+
 ## [0.1.3] - 2023-12-05
 
 ### Added
