@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.4-rc01] - 2024-05-31
 
 ### Added
 - Added `container/compose` folder with compose files.
