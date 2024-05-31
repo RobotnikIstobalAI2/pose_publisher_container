@@ -113,6 +113,9 @@ ENV CHECK_NODES "false"
 #### space separted node list with full namespace
 ENV NODES_TO_CHECK "/rosout"
 
+ENV ROS_DOMAIN_ID "60"
+ENV RMW_IMPLEMENTATION "rmw_cyclonedds_cpp"
+
 ENV ROBOT_ID "robot"
 ENV NODE_NAME "node_pose_publisher"
 ENV HEALTHCHECK_NODES "/${ROBOT_ID}/node_pose_publisher"
@@ -121,3 +124,4 @@ ENV POSE_PUBLISHER_FREQUENCY "50.0"
 ENV MAP_FRAME "map"
 ENV POSE_PUBLISHER_BASE_FRAME_SUFFIX "base_link"
 ENV POSE_PUBLISHER_TOPIC_REPUB "pose"
+
