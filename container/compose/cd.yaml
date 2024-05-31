@@ -2,7 +2,7 @@
 services:
   container:
     image: >-
-      ${REGISTRY_BASE}/${REGISTRY_PROJECT}/${IMAGE_NAME}:pose-publisher-${DOCKER_ROS_DISTRO}-${VERSION}
+      ${REGISTRY_BASE}/${REGISTRY_PROJECT}/${IMAGE_NAME}:${DOCKER_ROS_DISTRO}-${VERSION}
     build:
       network: host
       args:
