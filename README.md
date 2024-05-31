@@ -13,7 +13,7 @@ git clone git@github.com:RobotnikIstobalAI2/pose_publisher_container.git
 
 ```bash
 cd pose_publisher_container
-git checkout 0.1.4-rc02
+git checkout 0.1.4-rc03
 git pull
 cd ..
 ```
@@ -26,7 +26,7 @@ You can build the image without launching the docker by using the following comm
 
 ```bash
 cd pose_publisher_container
-git checkout 0.1.4-rc02
+git checkout 0.1.4-rc03
 cd container/builder
 docker compose build
 cd ../../..
@@ -40,7 +40,7 @@ To run the Pose publisher container, follow these steps:
 
 ```bash
 cd pose_publisher_container
-git checkout 0.1.4-rc02
+git checkout 0.1.4-rc03
 cd container
 docker compose up -d
 ```
@@ -97,7 +97,7 @@ The following files and environment variables are contained within `container/en
 | Environment         | Default Value | Meaning                            |
 | ------------------- | ------------- | ---------------------------------- |
 | `DOCKER_ROS_DISTRO` | `humble`      | ROS distribution of the container  |
-| `VERSION`           | `0.1.4-rc02`  | Repository version (branch or tag) |
+| `VERSION`           | `0.1.4-rc03`  | Repository version (branch or tag) |
 
 
 ### 4.2 POSE environment files
