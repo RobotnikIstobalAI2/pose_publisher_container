@@ -10,3 +10,4 @@ services:
     env_file:
       - *ros-params_env
       - *republisher_env
+    network_mode: host
