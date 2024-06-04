@@ -25,7 +25,7 @@
 
 
 ### Changed
-- Modified in `container/builder/repos/common.repo.yml` the branch of the repository `pose_publisher` from `ros1` `0.1.3` to `ros2` `0.1.4-rc01`.
+- Modified in `container/builder/repos/common.repo.yml` the branch of the repository `pose_publisher` from `ros1` `0.1.3` to `ros2` `0.1.4-rc02`.
 - Modified the files `builder.txt` and `pose-publisher.txt` of the `container/builder/requirements` folder with the ros2 dependencies.
 - New docker compose structure with, include, override and merge features (consult docker compose documention for futher information).
     - Compose files with content are located in `container/compose`, environment variables for the docker compose splitted and assigned to included.
