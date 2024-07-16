@@ -45,14 +45,25 @@ FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
 USER root
 
-RUN --mount=type=bind,source=./requirements/builder.txt,target=/tmp/requirements.txt true \
-  && apt-get update \
-  && apt-get install -q -y \
-  --no-install-recommends \
-    $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
-  && apt-get clean -q -y \
-  && apt-get autoremove -q -y \
-  && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=bind,\
+source=./requirements/builder.txt,\
+target=/tmp/requirements.txt \
+    true \
+    && if \
+        timeout 2 curl -IsS http://${ros_mirror} &>/dev/null; \
+        then \
+        sed -i \
+            "s#packages.ros.org#${ros_mirror}#" \
+            /etc/apt/sources.list.d/ros-latest.list ;\
+        fi \
+    && apt-fast update \
+    && apt-fast install -q -y \
+        --no-install-recommends \
+        $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
+    && apt-get clean -q -y \
+    && apt-get autoremove -q -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && true
 
 USER $USER_NAME
 
@@ -77,14 +88,26 @@ LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
 USER root
 
-RUN --mount=type=bind,source=./requirements/pose-publisher.txt,target=/tmp/requirements.txt true \
-  && apt-get update \
-  && apt-get install -q -y \
-  --no-install-recommends \
-    $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
-  && apt-get clean -q -y \
-  && apt-get autoremove -q -y \
-  && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=bind,\
+source=./requirements/pose-publisher.txt,\
+target=/tmp/requirements.txt\
+    true \
+    && if \
+        timeout 2 curl -IsS http://${ros_mirror} &>/dev/null; \
+        then \
+        sed -i \
+            "s#packages.ros.org#${ros_mirror}#" \
+            /etc/apt/sources.list.d/ros-latest.list ;\
+        fi \
+    && apt-fast update \
+    && apt-fast install -q -y \
+        --no-install-recommends \
+        $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
+    && sed -i "s#${ros_mirror}#packages.ros.org#" /etc/apt/sources.list.d/ros-latest.list \
+    && apt-get clean -q -y \
+    && apt-get autoremove -q -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && true
 
 USER root
 RUN --mount=type=bind,from=builder,source=${USER_WORKSPACE}/debs,target=/tmp/debs \
@@ -92,8 +115,6 @@ RUN --mount=type=bind,from=builder,source=${USER_WORKSPACE}/debs,target=/tmp/deb
     apt-get install -y --no-install-recommends \
         /tmp/debs/*.deb \
     && rm -rf /var/lib/apt/lists/*
-
-CMD ["bash", "-c", "/usr/local/bin/ros_launcher.sh"]
 
 USER $USER_NAME
 
@@ -124,4 +145,3 @@ ENV POSE_PUBLISHER_FREQUENCY "50.0"
 ENV MAP_FRAME "map"
 ENV POSE_PUBLISHER_BASE_FRAME_SUFFIX "base_link"
 ENV POSE_PUBLISHER_TOPIC_REPUB "pose"
-
