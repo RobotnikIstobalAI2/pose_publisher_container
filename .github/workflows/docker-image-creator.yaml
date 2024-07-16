@@ -27,10 +27,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USER }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Build image and push
-        env:
-          REGISTRY_BASE: ${{ vars.REGISTRY_BASE }}
-          IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-          REGISTRY_PROJECT: ${{ vars.REGISTRY_PROJECT }}
         run: |
           cd container/builder
-          docker compose -f ci.yaml build --push
+          docker compose -f cd.yaml build --push
