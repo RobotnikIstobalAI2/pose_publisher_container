@@ -1,0 +1,9 @@
+---
+include:
+  - path:
+      - ../compose/builder-common.yaml
+    project_directory: .
+    env_file:
+      - ../environment/compose/builder-config.env
+      - ../environment/compose/version.env
+      - ../environment/compose/registry-robotnik.env

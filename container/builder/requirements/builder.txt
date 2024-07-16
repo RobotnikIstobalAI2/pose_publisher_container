@@ -1,2 +1,3 @@
-ros-${ROS_DISTRO}-tf
+ros-${ROS_DISTRO}-tf2
+ros-${ROS_DISTRO}-tf2-ros
 ros-${ROS_DISTRO}-geometry-msgs

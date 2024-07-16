@@ -29,10 +29,17 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Global ARGs
 ARG base_image="robotnik/ros"
-ARG ros_distro="noetic"
+ARG ros_distro="humble"
 ARG image_base_version="use-args"
 ARG version="use-args"
+# With no local copy or the repos
+# base: use the git from vcs
+# local: use the ones from the local repo
+# ARG builder_type=base
+ARG builder_type="use-args"
 
 FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
@@ -52,7 +59,7 @@ USER $USER_NAME
 RUN --mount=type=bind,\
 source=./repos/common.repo.yml,\
 target=/tmp/common.repo.yml,ro \
-     vcs import \
+    vcs import \
         --input /tmp/common.repo.yml  \
         --shallow
 
@@ -93,11 +100,12 @@ USER $USER_NAME
 RUN mkdir $USER_HOME/data
 VOLUME $USER_HOME/data
 
+# Set environment variables
 ENV STARTUP_TYPE "launch"
 # package to launch
 ENV ROS_BU_PKG "pose_publisher"
 # script of program to launch with all its arguments
-ENV ROS_BU_LAUNCH "pose_publisher_bringup.launch"
+ENV ROS_BU_LAUNCH "pose_publisher.launch.xml"
 
 ### Required nodes to startup
 #### if true check if the NODES_TO_CHECK nodes are started up before starting the program
@@ -105,11 +113,15 @@ ENV CHECK_NODES "false"
 #### space separted node list with full namespace
 ENV NODES_TO_CHECK "/rosout"
 
-ENV ROBOT_ID "robot"
-ENV NODE_NAME "pose_publisher"
-ENV HEALTHCHECK_NODES "/${ROBOT_ID}/pose_publisher"
+ENV ROS_DOMAIN_ID "60"
+ENV RMW_IMPLEMENTATION "rmw_cyclonedds_cpp"
 
-ENV POSE_PUBLISHER_FREQUENCY "10"
-ENV POSE_PUBLISHER_BASE_FRAME_SUFFIX "base_footprint"
+ENV ROBOT_ID "robot"
+ENV NODE_NAME "node_pose_publisher"
+ENV HEALTHCHECK_NODES "/${ROBOT_ID}/node_pose_publisher"
+
+ENV POSE_PUBLISHER_FREQUENCY "50.0"
+ENV MAP_FRAME "map"
+ENV POSE_PUBLISHER_BASE_FRAME_SUFFIX "base_link"
 ENV POSE_PUBLISHER_TOPIC_REPUB "pose"
-ENV MAP_FRAME "robot_map"
+

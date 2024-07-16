@@ -1,0 +1,13 @@
+---
+x-public-reg: &public_reg ./environment/compose/registry-docker-hub.env
+x-private-reg: &private_reg ./environment/compose/registry-robotnik.env
+x-version: &version ./environment/compose/version.env
+
+name: pose-publisher
+include:
+  - path:
+      - ./compose/run.yaml
+    project_directory: .
+    env_file:
+      - *version
+      - *private_reg
