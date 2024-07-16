@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.4-rc08] - 2024-07-16
+
+### Added
+
+### Changed
+- The local builder now uses public registries
+- The cd.yaml uses the private registries
+- Moved environment variable IMAGE_NAME to version.env
+- Moved environment variable REGISTRY_PROJECT to project.env
+- Moved pull arg from builder-common.yaml to cd.yaml
+- Moved no_canche arg from builder-common.yaml to cd.yaml
+- Use of environment file project.env on local builder, cd and deploy
+- Moved up the labels in dockerfile
+- Use of apt-fast for faster image build
+- Added use of ros mirror if it's reachable
+
+### Fixed
+- Fixed the run compose to use the right image
+- Local deploy compose added name 'pose-publisher'
+- Corrected use of argument ros_mirror in dockerfile
+- Removed unneeded cmd specification
+
+
 ## [0.1.4] - 2024-07-16
 
 ### Added
