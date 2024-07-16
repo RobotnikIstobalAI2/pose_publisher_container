@@ -6,7 +6,7 @@ name: pose-publisher
 services:
   pose-publisher:
     image: >-
-      ${REGISTRY_BASE}library/pose-publisher:${DOCKER_ROS_DISTRO}-${VERSION}
+      ${REGISTRY_BASE}${REGISTRY_PROJECT}/${IMAGE_NAME}:${DOCKER_ROS_DISTRO}-${VERSION}
     env_file:
       - *ros-params_env
       - *republisher_env

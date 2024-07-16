@@ -5,8 +5,6 @@ services:
     image: >-
       ${REGISTRY_BASE}${REGISTRY_PROJECT}/${IMAGE_NAME}:${DOCKER_ROS_DISTRO}-${VERSION}
     build:
-      pull: true
-      no_cache: true
       context: .
       dockerfile: Dockerfile
       args:
