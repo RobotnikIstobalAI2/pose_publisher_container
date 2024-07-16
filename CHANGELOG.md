@@ -15,6 +15,7 @@
 - Moved up the labels in dockerfile
 - Use of apt-fast for faster image build
 - Added use of ros mirror if it's reachable
+- Updated github action in order to not use the repo variables instead use the environment files
 
 ### Fixed
 - Fixed the run compose to use the right image
