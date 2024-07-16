@@ -29,37 +29,17 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Global ARGs
 ARG base_image="robotnik/ros"
 ARG ros_distro="noetic"
 ARG image_base_version="use-args"
 ARG version="use-args"
-
-FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
-
-USER root
-
-RUN \
---mount=type=bind,\
-source=./requirements/builder.txt,\
-target=/tmp/requirements.txt true \
-  && apt-get update \
-  && apt-fast install -q -y \
-  --no-install-recommends \
-    $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
-  && apt-get clean -q -y \
-  && apt-get autoremove -q -y \
-  && rm -rf /var/lib/apt/lists/*
-
-USER $USER_NAME
-
-RUN --mount=type=bind,\
-source=./repos/common.repo.yml,\
-target=/tmp/common.repo.yml,ro \
-     vcs import \
-        --input /tmp/common.repo.yml  \
-        --shallow
-
-RUN generate_debs.sh
+# With no local copy or the repos
+# base: use the git from vcs
+# local: use the ones from the local repo
+# ARG builder_type=base
+ARG builder_type="use-args"
 
 FROM  ${base_image}:${ros_distro}-base-${image_base_version} as base
 
@@ -71,37 +51,87 @@ LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
       org.opencontainers.image.vendor="Robotnik Automation S.L." \
       org.opencontainers.image.licenses="BSD-3-Clause" \
       org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
+
+FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
+
 USER root
 
-RUN \
---mount=type=bind,\
+ENV DEBIAN_FRONTEND=noninteractive
+ARG ros_mirror="user-args"
+
+RUN --mount=type=bind,\
+source=./requirements/builder.txt,\
+target=/tmp/requirements.txt \
+    true \
+    && if \
+        timeout 2 curl -IsS http://${ros_mirror} &>/dev/null; \
+        then \
+        sed -i \
+            "s#packages.ros.org#${ros_mirror}#" \
+            /etc/apt/sources.list.d/ros-latest.list ;\
+        fi \
+    && apt-fast update \
+    && apt-fast install -q -y \
+        --no-install-recommends \
+        $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
+    && apt-get clean -q -y \
+    && apt-get autoremove -q -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && true
+
+USER $USER_NAME
+
+RUN --mount=type=bind,\
+source=./repos/common.repo.yml,\
+target=/tmp/common.repo.yml,ro \
+    vcs import \
+        --input /tmp/common.repo.yml  \
+        --shallow
+
+RUN generate_debs.sh
+
+FROM base
+
+USER root
+
+ENV DEBIAN_FRONTEND=noninteractive
+ARG ros_mirror="user-args"
+
+RUN --mount=type=bind,\
 source=./requirements/pose-publisher.txt,\
-target=/tmp/requirements.txt true \
-  && apt-get update \
-  && apt-fast install -q -y \
-  --no-install-recommends \
-    $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
-  && apt-get clean -q -y \
-  && apt-get autoremove -q -y \
-  && rm -rf /var/lib/apt/lists/*
+target=/tmp/requirements.txt\
+    true \
+    && if \
+        timeout 2 curl -IsS http://${ros_mirror} &>/dev/null; \
+        then \
+        sed -i \
+            "s#packages.ros.org#${ros_mirror}#" \
+            /etc/apt/sources.list.d/ros-latest.list ;\
+        fi \
+    && apt-fast update \
+    && apt-fast install -q -y \
+        --no-install-recommends \
+        $(eval "echo $(cat /tmp/requirements.txt | xargs)") \
+    && sed -i "s#${ros_mirror}#packages.ros.org#" /etc/apt/sources.list.d/ros-latest.list \
+    && apt-get clean -q -y \
+    && apt-get autoremove -q -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && true
 
-USER root
-RUN \
---mount=type=bind,\
-from=builder,\
-source=${USER_WORKSPACE}/debs,target=/tmp/debs \
+RUN --mount=type=bind,\
+from=builder,source=${USER_WORKSPACE}/debs,\
+target=/tmp/debs \
     apt update && \
-    apt-fast install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends \
         /tmp/debs/*.deb \
     && rm -rf /var/lib/apt/lists/*
-
-CMD ["bash", "-c", "/usr/local/bin/ros_launcher.sh"]
 
 USER $USER_NAME
 
 RUN mkdir $USER_HOME/data
 VOLUME $USER_HOME/data
 
+# Set environment variables
 ENV STARTUP_TYPE "launch"
 # package to launch
 ENV ROS_BU_PKG "pose_publisher"

@@ -1,0 +1,11 @@
+---
+name: pose-publisher
+include:
+  - path:
+      - ./compose/run.yaml
+    project_directory: .
+    env_file:
+      - ./environment/compose/project.env
+      - ./environment/compose/version.env
+      # - ./environment/compose/registry-robotnik.env
+      - ./environment/compose/registry-docker-hub.env
