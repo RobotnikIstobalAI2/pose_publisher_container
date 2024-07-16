@@ -23,6 +23,8 @@
 - Corrected use of argument ros_mirror in dockerfile
 - Removed unneeded cmd specification
 
+### Removed
+- Removed obsolete demo folder
 
 ## [0.1.4] - 2024-07-16
 
