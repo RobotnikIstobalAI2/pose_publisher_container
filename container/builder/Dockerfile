@@ -41,9 +41,23 @@ ARG version="use-args"
 # ARG builder_type=base
 ARG builder_type="use-args"
 
+FROM  ${base_image}:${ros_distro}-base-${image_base_version} as base
+
+LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
+      org.opencontainers.image.title="pose-publisher" \
+      org.opencontainers.image.version="${version}" \
+      org.opencontainers.image.description="Pose Publisher" \
+      org.opencontainers.image.source="https://github.com/RobotnikIstobalAI2/pose_publisher_container" \
+      org.opencontainers.image.vendor="Robotnik Automation S.L." \
+      org.opencontainers.image.licenses="BSD-3-Clause" \
+      org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
+
 FROM ${base_image}:${ros_distro}-builder-${image_base_version} as builder
 
 USER root
+
+ENV DEBIAN_FRONTEND=noninteractive
+ARG ros_mirror="user-args"
 
 RUN --mount=type=bind,\
 source=./requirements/builder.txt,\
@@ -76,17 +90,12 @@ target=/tmp/common.repo.yml,ro \
 
 RUN generate_debs.sh
 
-FROM  ${base_image}:${ros_distro}-base-${image_base_version} as base
+FROM base
 
-LABEL maintainer="Guillem Gari <ggari@robotnik.es>" \
-      org.opencontainers.image.title="pose-publisher" \
-      org.opencontainers.image.version="${version}" \
-      org.opencontainers.image.description="Pose Publisher" \
-      org.opencontainers.image.source="https://github.com/RobotnikIstobalAI2/pose_publisher_container" \
-      org.opencontainers.image.vendor="Robotnik Automation S.L." \
-      org.opencontainers.image.licenses="BSD-3-Clause" \
-      org.opencontainers.image.authors="Guillem Gari <ggari@robotnik.es>"
 USER root
+
+ENV DEBIAN_FRONTEND=noninteractive
+ARG ros_mirror="user-args"
 
 RUN --mount=type=bind,\
 source=./requirements/pose-publisher.txt,\
@@ -109,8 +118,9 @@ target=/tmp/requirements.txt\
     && rm -rf /var/lib/apt/lists/* \
     && true
 
-USER root
-RUN --mount=type=bind,from=builder,source=${USER_WORKSPACE}/debs,target=/tmp/debs \
+RUN --mount=type=bind,\
+from=builder,source=${USER_WORKSPACE}/debs,\
+target=/tmp/debs \
     apt update && \
     apt-get install -y --no-install-recommends \
         /tmp/debs/*.deb \
