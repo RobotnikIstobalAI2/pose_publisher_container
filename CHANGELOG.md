@@ -16,6 +16,8 @@
 - Use of apt-fast for faster image build
 - Added use of ros mirror if it's reachable
 - Updated github action in order to not use the repo variables instead use the environment files
+- Changed the repos name file from `repos/common.repo.yml` to `repos/common.repo.yaml`.
+- Changed Dockerfile to: update repos name file, add apt-fast and modify the `HEALTHCHECK_NODES` environment variable.
 
 ### Fixed
 - Fixed the run compose to use the right image
