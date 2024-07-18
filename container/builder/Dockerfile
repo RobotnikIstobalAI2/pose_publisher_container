@@ -82,10 +82,10 @@ target=/tmp/requirements.txt \
 USER $USER_NAME
 
 RUN --mount=type=bind,\
-source=./repos/common.repo.yml,\
-target=/tmp/common.repo.yml,ro \
+source=./repos/common.repo.yaml,\
+target=/tmp/common.repo.yaml,ro \
     vcs import \
-        --input /tmp/common.repo.yml  \
+        --input /tmp/common.repo.yaml \
         --shallow
 
 RUN generate_debs.sh
@@ -119,10 +119,11 @@ target=/tmp/requirements.txt\
     && true
 
 RUN --mount=type=bind,\
-from=builder,source=${USER_WORKSPACE}/debs,\
+from=builder,\
+source=${USER_WORKSPACE}/debs,\
 target=/tmp/debs \
     apt update && \
-    apt-get install -y --no-install-recommends \
+    apt-fast install -y --no-install-recommends \
         /tmp/debs/*.deb \
     && rm -rf /var/lib/apt/lists/*
 
@@ -149,7 +150,7 @@ ENV RMW_IMPLEMENTATION "rmw_cyclonedds_cpp"
 
 ENV ROBOT_ID "robot"
 ENV NODE_NAME "node_pose_publisher"
-ENV HEALTHCHECK_NODES "/${ROBOT_ID}/node_pose_publisher"
+ENV HEALTHCHECK_NODES "/\${ROBOT_ID}/\${NODE_NAME}"
 
 ENV POSE_PUBLISHER_FREQUENCY "50.0"
 ENV MAP_FRAME "map"
