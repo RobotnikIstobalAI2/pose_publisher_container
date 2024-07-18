@@ -2,10 +2,12 @@
 services:
   container:
     image: >-
-      ${REGISTRY_BASE}/${REGISTRY_PROJECT}/${IMAGE_NAME}:${DOCKER_ROS_DISTRO}-${VERSION}
+      ${REGISTRY_BASE}${REGISTRY_PROJECT}/${IMAGE_NAME}:${DOCKER_ROS_DISTRO}-${GITHUB_REF_NAME}
     build:
+      pull: true
+      no_cache: true
       network: host
       args:
-        base_image: ${REGISTRY_BASE}/robotnik/ros
+        version: ${GITHUB_REF_NAME}
     networks:
       default: null
