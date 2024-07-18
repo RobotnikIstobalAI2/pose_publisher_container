@@ -3,9 +3,11 @@
 ## Unreleased
 
 ### Changed
-- Changed to robotnik public `robotnik/ros:noetic-gui-0.5.0` ros images as docker image base.
+- Changed to robotnik public `robotnik/ros:noetic-base-0.5.0` ros images as docker image base.
 - Changed to robotnik public `robotnik/ros:noetic-builder-0.5.0` ros images as package builder intermediate image.
-- Use of `apt-fast` for parallel downloading for apt
+- Use of `apt-fast` for parallel downloading for apt.
+- Changed the repos name file from `repos/common.repo.yml` to `repos/common.repo.yaml`.
+- Changed Dockerfile to: update repos name file, add apt-fast and modify the `HEALTHCHECK_NODES` environment variable.
 
 ## [0.1.3] - 2023-12-05
 
