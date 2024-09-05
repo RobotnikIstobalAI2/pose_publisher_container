@@ -3,23 +3,26 @@ Pose publisher container on topic
 
 ## Configuration
 
-The following environment variables are used on the docker image:
+The `environment` folder, located at `container/environment`, contains all the files with the environment variables used on the docker images.
 
-You can configure it throught the docker-compose file
+You can configure them.
 
-```yaml
----
-name: pose-publisher
-services:
-  core:
-    image: pose-publisher:noetic-devel
-    environment:
-      ROBOT_ID: "robot"
-      POSE_PUBLISHER_FREQUENCY: "10"
-      POSE_PUBLISHER_BASE_FRAME_SUFFIX: "base_footprint"
-      POSE_PUBLISHER_TOPIC_REPUB: "pose"
-      MAP_FRAME: "robot_map"
-```
+### Environment variables
+
+#### ROS Params ([ros-params.env](./container/environment/pose/ros-params.env))
+| Environment  | Default Value  | Meaning  |
+|------------- | -------------- | -------- |
+| `ROBOT_ID`   | `robot`        | Robot id |
+
+#### Pose Publisher Params ([republisher.env](./container/environment/pose/republisher.env))
+| Environment                        | Default Value         | Meaning                                 |
+| ---------------------------------- | --------------------- | --------------------------------------- |
+| `NODE_NAME`                        | `node_pose_publisher` | Name of the node                        |
+| `POSE_PUBLISHER_FREQUENCY`         | `50.0`                | Frequency of robot pose msg publication |
+| `MAP_FRAME`                        | `robot_map`           | Map frame name                          |
+| `POSE_PUBLISHER_BASE_FRAME_SUFFIX` | `base_link`           | Base frame name                         |
+| `POSE_PUBLISHER_TOPIC_REPUB`       | `pose`                | Topic where the robot pose is published |
+
 ## Image build
 
 ```bash
@@ -31,8 +34,8 @@ docker compose build
 cd ..
 ```
 
-## Launch docker with mqtt-bridge
+## Launch docker with robot pose publisher
 
 ```bash
-docker compose up
+docker compose up -d
 ```
